@@ -5,6 +5,7 @@ const {
   validation,
   controllerWrapper,
   authenticate,
+  upload,
 } = require('../../middlewares')
 
 const { auth: controllers } = require('../../controllers')
@@ -26,6 +27,13 @@ router.get(
   '/users/current',
   authenticate,
   controllerWrapper(controllers.curentUser)
+)
+
+router.patch(
+  '/:id/users/avatar',
+  authenticate,
+  upload.single('avatar'),
+  controllerWrapper(controllers.updateAvatar)
 )
 
 router.get('/users/logout', authenticate, controllerWrapper(controllers.logout))
