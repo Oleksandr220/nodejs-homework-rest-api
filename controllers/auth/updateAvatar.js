@@ -4,6 +4,7 @@ const { NotFound } = require('http-errors')
 const Jimp = require('jimp')
 
 const { User } = require('../../models')
+const { HOST_NAME } = process.env
 
 const contactsDir = path.join(__dirname, '../../public/avatars')
 
@@ -11,15 +12,16 @@ const updateAvatar = async (req, res) => {
   const { id } = req.params
   const { path: tempUpload, originalname } = req.file
   try {
+    const avatarURL = path.join(HOST_NAME, '/public/avatars/', originalname)
     const resultUpload = path.join(contactsDir, originalname)
     await fs.rename(tempUpload, resultUpload)
-    // const avatarURL = path.join('http://localhost:3000/avatars', originalname)
-    await Jimp.read(`${contactsDir}/${originalname}`).then((avatar) => {
-      return avatar.cover(250, 250).write(`${contactsDir}/avatar-small-bw.jpg`)
+    await Jimp.read(resultUpload).then((avatar) => {
+      const newAvatar = avatar.cover(250, 250).write(resultUpload)
+      return newAvatar
     })
     const result = await User.findByIdAndUpdate(
       id,
-      { avatarURL: 'http://localhost:3000/avatars/avatar-small-bw.jpg' },
+      { avatarURL },
       { new: true }
     )
     if (!result) {

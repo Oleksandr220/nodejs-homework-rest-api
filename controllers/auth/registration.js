@@ -5,8 +5,8 @@ const { Conflict } = require('http-errors')
 const { User } = require('../../models')
 
 const registration = async (req, res) => {
-  const avatarURL = gravatar.url('alex.maslov@gmail.com')
   const { email, password } = req.body
+  const avatarURL = gravatar.url(email)
   const user = await User.findOne({ email })
 
   if (user) {
