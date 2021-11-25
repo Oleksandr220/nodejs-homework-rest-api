@@ -35,7 +35,7 @@ router.put(
 router.patch(
   '/:contactId/favorite',
   authenticate,
-  controllerWrapper(controllers.updaateFavorite)
+  controllerWrapper(controllers.updateFavorite)
 )
 
 module.exports = router
