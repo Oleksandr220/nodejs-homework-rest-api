@@ -38,4 +38,11 @@ router.patch(
 
 router.get('/users/logout', authenticate, controllerWrapper(controllers.logout))
 
+router.get(
+  '/users/verify/:verificationToken',
+  controllerWrapper(controllers.verify)
+)
+
+router.post('/users/verify', controllerWrapper(controllers.repeatedVerify))
+
 module.exports = router
